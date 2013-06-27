@@ -19,8 +19,8 @@ public class Exporter implements Runnable {
     @Override
     public void run() {
         Index index = Index.getInstance();
-        //todo nextIndex get Index
-        while (index.getIndex() > 0) {
+
+        while (index.nextIndex() > 0) {
             StringBuffer result = new StringBuffer();
 
             System.err.println(name + " aldım");

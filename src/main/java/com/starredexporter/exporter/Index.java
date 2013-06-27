@@ -29,11 +29,19 @@ public class Index {
         try {
             tokener = new JSONTokener(new FileInputStream(path));
         } catch (FileNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
         JSONObject main = new JSONObject(tokener);
         JSONArray items = main.getJSONArray("items");
         this.length = items.length();
+    }
+
+    public int nextIndex(){
+        if (index < length) {
+            return index;
+        } else {
+            return -1;
+        }
     }
 
     public synchronized int getIndex() {
