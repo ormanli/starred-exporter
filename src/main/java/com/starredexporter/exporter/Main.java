@@ -19,14 +19,10 @@ public class Main {
         Index index = Index.getInstance();
         index.setTokener("/home/serdar/İndirilenler/starred.json");
 
-        Exporter exporter1 = new Exporter("/home/serdar/İndirilenler/starred.json", "1");
-        Exporter exporter2 = new Exporter("/home/serdar/İndirilenler/starred.json", "2");
-        Exporter exporter3 = new Exporter("/home/serdar/İndirilenler/starred.json", "3");
-        Exporter exporter4 = new Exporter("/home/serdar/İndirilenler/starred.json", "4");
+        for (int i = 0; i < Runtime.getRuntime().availableProcessors(); i++) {
+            Exporter exporter = new Exporter("/home/serdar/İndirilenler/starred.json", i + "");
+            new Thread(exporter).start();
+        }
 
-        new Thread(exporter1).start();
-        new Thread(exporter2).start();
-        new Thread(exporter3).start();
-        new Thread(exporter4).start();
     }
 }

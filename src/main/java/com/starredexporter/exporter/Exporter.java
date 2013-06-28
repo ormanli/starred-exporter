@@ -20,47 +20,51 @@ public class Exporter implements Runnable {
     public void run() {
         Index index = Index.getInstance();
 
-        while (index.nextIndex() > 0) {
-            StringBuffer result = new StringBuffer();
+        while (index.nextIndex() > -1) {
+            int indexValue = index.getIndex();
 
-            System.err.println(name + " aldım");
+            if (indexValue > 0) {
+                StringBuffer result = new StringBuffer();
 
-            JSONTokener tokener = null;
-            try {
-                tokener = new JSONTokener(new FileInputStream(path));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+                System.err.println(name + " aldım");
 
-
-            JSONObject main = new JSONObject(tokener);
-            JSONArray items = main.getJSONArray("items");
-
-            JSONObject object = items.getJSONObject(index.getIndex());
-
-            JSONArray objectArray = object.optJSONArray("alternate");
-            JSONObject link = objectArray.optJSONObject(0);
-
-            result.append("<li>");
-            result.append("--------");
-            result.append("<h2>");
-            result.append(" <a href=\"");
-            result.append(link.optString("href"));
-            result.append("\">");
-            result.append(object.optString("title"));
-            result.append(("</a> "));
-            result.append("</h2>");
-            if (!object.isNull("content")) {
-                JSONObject content = object.optJSONObject("content");
-                if (!content.isNull("content")) {
-                    String contentString = content.optString("content");
-                    result.append(contentString);
+                JSONTokener tokener = null;
+                try {
+                    tokener = new JSONTokener(new FileInputStream(path));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
                 }
-            }
-            result.append("</li>");
 
-            HTMLStash stash = HTMLStash.getInstance();
-            stash.put(result.toString());
+
+                JSONObject main = new JSONObject(tokener);
+                JSONArray items = main.getJSONArray("items");
+
+                JSONObject object = items.getJSONObject(indexValue);
+
+                JSONArray objectArray = object.optJSONArray("alternate");
+                JSONObject link = objectArray.optJSONObject(0);
+
+                result.append("<li>");
+                result.append("--------");
+                result.append("<h2>");
+                result.append(" <a href=\"");
+                result.append(link.optString("href"));
+                result.append("\">");
+                result.append(object.optString("title"));
+                result.append(("</a> "));
+                result.append("</h2>");
+                if (!object.isNull("content")) {
+                    JSONObject content = object.optJSONObject("content");
+                    if (!content.isNull("content")) {
+                        String contentString = content.optString("content");
+                        result.append(contentString);
+                    }
+                }
+                result.append("</li>");
+
+                HTMLStash stash = HTMLStash.getInstance();
+                stash.put(result.toString());
+            }
         }
     }
 }
