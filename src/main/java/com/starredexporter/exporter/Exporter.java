@@ -4,16 +4,24 @@ import com.starredexporter.jsonorg.JSONArray;
 import com.starredexporter.jsonorg.JSONObject;
 import com.starredexporter.jsonorg.JSONTokener;
 
+import javax.swing.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class Exporter implements Runnable {
     private String name;
     private String path;
+    private JProgressBar progressBar;
 
     public Exporter(String path, String name) {
         this.path = path;
         this.name = name;
+    }
+
+    public Exporter(String path, String name, JProgressBar progressBar) {
+        this.path = path;
+        this.name = name;
+        this.progressBar = progressBar;
     }
 
     @Override
@@ -64,6 +72,10 @@ public class Exporter implements Runnable {
 
                 HTMLStash stash = HTMLStash.getInstance();
                 stash.put(result.toString());
+
+                if (progressBar != null) {
+                    progressBar.setValue(indexValue);
+                }
             }
         }
     }

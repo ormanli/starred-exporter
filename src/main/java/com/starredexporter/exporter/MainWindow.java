@@ -1,10 +1,16 @@
 package com.starredexporter.exporter;
 
+import com.starredexporter.jsonorg.JSONArray;
+import com.starredexporter.jsonorg.JSONObject;
+import com.starredexporter.jsonorg.JSONTokener;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class MainWindow {
     private JFileChooser fileChooser = new JFileChooser();
@@ -16,6 +22,7 @@ public class MainWindow {
     private JRadioButton linksAndContentRadioButton;
     private JProgressBar progressBar;
     private JButton importButton;
+    private String path = null;
 
     public MainWindow() {
         chooseButton.addActionListener(new ActionListener() {
@@ -24,7 +31,7 @@ public class MainWindow {
                 fileChooser.setFileFilter(new FileFilter() {
                     @Override
                     public boolean accept(File f) {
-                        return f.isDirectory()||f.getName().endsWith(".json");
+                        return f.isDirectory() || f.getName().endsWith(".json");
                     }
 
                     @Override
@@ -34,12 +41,9 @@ public class MainWindow {
                 });
                 int returnVal = fileChooser.showOpenDialog(chooseButton);
 
-                String path = null;
 
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-//                    File file = fileChooser.getSelectedFile();
                     path = fileChooser.getSelectedFile().getPath();
-//                    System.out.println("Opening: " + file.getAbsolutePath());
                 } else {
                     path = "";
                 }
@@ -49,7 +53,29 @@ public class MainWindow {
         importButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (!path.isEmpty() || (path != null)) {
+                    JSONTokener aa = null;
+                    try {
+                        aa = new JSONTokener(new FileInputStream(path));
+                    } catch (FileNotFoundException e1) {
+                        e1.printStackTrace();
+                    }
 
+                    JSONObject main = new JSONObject(aa);
+                    JSONArray items = main.getJSONArray("items");
+
+
+                    Index index = Index.getInstance();
+                    index.setTokener(path);
+
+                    progressBar.setMinimum(0);
+                    progressBar.setMaximum(index.getLength());
+
+                    for (int i = 0; i < Runtime.getRuntime().availableProcessors(); i++) {
+                        Exporter exporter = new Exporter(path, i + "", progressBar);
+                        new Thread(exporter).start();
+                    }
+                }
             }
         });
     }

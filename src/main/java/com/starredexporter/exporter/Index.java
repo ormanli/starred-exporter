@@ -36,7 +36,7 @@ public class Index {
         this.length = items.length();
     }
 
-    public int nextIndex(){
+    public int nextIndex() {
         if (index < length) {
             return index;
         } else {
@@ -58,5 +58,9 @@ public class Index {
             }
             return -1;
         }
+    }
+
+    public int getLength() {
+        return length;
     }
 }
