@@ -54,6 +54,7 @@ public class MainWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!path.isEmpty() || (path != null)) {
+                    int mode = 0;
                     JSONTokener aa = null;
                     try {
                         aa = new JSONTokener(new FileInputStream(path));
@@ -71,8 +72,16 @@ public class MainWindow {
                     progressBar.setMinimum(0);
                     progressBar.setMaximum(index.getLength());
 
+                    if (linksAsPlaintextRadioButton.isSelected()) {
+                        mode = 1;
+                    } else if (linksRadioButton.isSelected()) {
+                        mode = 2;
+                    } else if (linksAndContentRadioButton.isSelected()) {
+                        mode = 3;
+                    }
+
                     for (int i = 0; i < Runtime.getRuntime().availableProcessors(); i++) {
-                        Exporter exporter = new Exporter(path, i + "", progressBar);
+                        Exporter exporter = new Exporter(path, i + "", progressBar, mode);
                         new Thread(exporter).start();
                     }
                 }

@@ -12,6 +12,7 @@ public class Exporter implements Runnable {
     private String name;
     private String path;
     private JProgressBar progressBar;
+    private int mode;
 
     public Exporter(String path, String name) {
         this.path = path;
@@ -22,6 +23,13 @@ public class Exporter implements Runnable {
         this.path = path;
         this.name = name;
         this.progressBar = progressBar;
+    }
+
+    public Exporter(String path, String name, JProgressBar progressBar, int mode) {
+        this.path = path;
+        this.name = name;
+        this.progressBar = progressBar;
+        this.mode = mode;
     }
 
     @Override
@@ -43,7 +51,7 @@ public class Exporter implements Runnable {
                     e.printStackTrace();
                 }
 
-
+                //TODO mode eklenecek
                 JSONObject main = new JSONObject(tokener);
                 JSONArray items = main.getJSONArray("items");
 
