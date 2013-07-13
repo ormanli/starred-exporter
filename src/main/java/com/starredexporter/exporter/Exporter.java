@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class Exporter implements Runnable {
+
     private String name;
     private String path;
     private JProgressBar progressBar;
@@ -23,6 +24,7 @@ public class Exporter implements Runnable {
         this.path = path;
         this.name = name;
         this.progressBar = progressBar;
+        this.mode = 3;
     }
 
     public Exporter(String path, String name, JProgressBar progressBar, int mode) {
@@ -51,7 +53,6 @@ public class Exporter implements Runnable {
                     e.printStackTrace();
                 }
 
-                //TODO mode eklenecek
                 JSONObject main = new JSONObject(tokener);
                 JSONArray items = main.getJSONArray("items");
 
@@ -62,20 +63,31 @@ public class Exporter implements Runnable {
 
                 result.append("<li>");
                 result.append("--------");
-                result.append("<h2>");
-                result.append(" <a href=\"");
+
+                if (mode > 1) {
+                    result.append("<h2>");
+                    result.append(" <a href=\"");
+                }
+
                 result.append(link.optString("href"));
-                result.append("\">");
-                result.append(object.optString("title"));
-                result.append(("</a> "));
-                result.append("</h2>");
-                if (!object.isNull("content")) {
-                    JSONObject content = object.optJSONObject("content");
-                    if (!content.isNull("content")) {
-                        String contentString = content.optString("content");
-                        result.append(contentString);
+                
+                if (mode > 1) {
+                    result.append("\">");
+                    result.append(object.optString("title"));
+                    result.append(("</a> "));
+                    result.append("</h2>");
+                }
+                
+                if (mode > 2) {
+                    if (!object.isNull("content")) {
+                        JSONObject content = object.optJSONObject("content");
+                        if (!content.isNull("content")) {
+                            String contentString = content.optString("content");
+                            result.append(contentString);
+                        }
                     }
                 }
+
                 result.append("</li>");
 
                 HTMLStash stash = HTMLStash.getInstance();
