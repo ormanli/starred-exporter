@@ -20,7 +20,7 @@ public class Main {
         index.setTokener("/home/serdar/İndirilenler/starred.json");
 
         for (int i = 0; i < Runtime.getRuntime().availableProcessors(); i++) {
-            Exporter exporter = new Exporter("/home/serdar/İndirilenler/starred.json", i + "");
+            Exporter exporter = new Exporter("/home/serdar/İndirilenler/starred.json", i + "",1);
             new Thread(exporter).start();
         }
 

@@ -44,6 +44,7 @@ public class MainWindow {
 
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     path = fileChooser.getSelectedFile().getPath();
+                    filepathTextField.setText(path);
                 } else {
                     path = "";
                 }
@@ -54,6 +55,7 @@ public class MainWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!path.isEmpty() || (path != null)) {
+                    importButton.setEnabled(false);
                     int mode = 0;
                     JSONTokener aa = null;
                     try {
@@ -67,7 +69,7 @@ public class MainWindow {
 
 
                     Index index = Index.getInstance();
-                    index.setTokener(path);
+                    index.setTokener(path,importButton);
 
                     progressBar.setMinimum(0);
                     progressBar.setMaximum(index.getLength());
@@ -95,6 +97,6 @@ public class MainWindow {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-
+        frame.setResizable(false);
     }
 }

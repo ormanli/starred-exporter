@@ -7,13 +7,13 @@ import com.starredexporter.jsonorg.JSONTokener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import javax.swing.JButton;
 
 public class Index {
 
     private int length;
     private int index = 0;
-
-
+    private JButton button;
     private static Index ourInstance = new Index();
 
     public static Index getInstance() {
@@ -21,7 +21,6 @@ public class Index {
     }
 
     private Index() {
-
     }
 
     public void setTokener(String path) {
@@ -40,6 +39,16 @@ public class Index {
         if (index < length) {
             return index;
         } else {
+            HTMLStash stash = HTMLStash.getInstance();
+            try {
+                stash.printOutput();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (button != null) {
+                button.setEnabled(true);
+            }
+            
             return -1;
         }
     }
@@ -47,20 +56,20 @@ public class Index {
     public synchronized int getIndex() {
         if (index < length) {
             int temp = index;
+            System.out.println((index + 1) + " of " + length + " items.");
             index++;
             return temp;
         } else {
-            HTMLStash stash = HTMLStash.getInstance();
-            try {
-                stash.printOutput();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             return -1;
         }
     }
 
     public int getLength() {
         return length;
+    }
+
+    public void setTokener(String path, JButton importButton) {
+        setTokener(path);
+        this.button = importButton;
     }
 }

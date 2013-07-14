@@ -18,6 +18,7 @@ public class Exporter implements Runnable {
     public Exporter(String path, String name) {
         this.path = path;
         this.name = name;
+        this.mode = 3;
     }
 
     public Exporter(String path, String name, JProgressBar progressBar) {
@@ -34,17 +35,22 @@ public class Exporter implements Runnable {
         this.mode = mode;
     }
 
+    public Exporter(String name, String path, int mode) {
+        this.name = name;
+        this.path = path;
+        this.mode = mode;
+    }
+
     @Override
     public void run() {
         Index index = Index.getInstance();
 
         while (index.nextIndex() > -1) {
+            
             int indexValue = index.getIndex();
-
-            if (indexValue > 0) {
+            
+            if (indexValue > -1) {
                 StringBuffer result = new StringBuffer();
-
-                System.err.println(name + " aldım");
 
                 JSONTokener tokener = null;
                 try {
@@ -61,8 +67,9 @@ public class Exporter implements Runnable {
                 JSONArray objectArray = object.optJSONArray("alternate");
                 JSONObject link = objectArray.optJSONObject(0);
 
-                result.append("<li>");
                 result.append("--------");
+                result.append("<li>");
+                
 
                 if (mode > 1) {
                     result.append("<h2>");
@@ -70,14 +77,14 @@ public class Exporter implements Runnable {
                 }
 
                 result.append(link.optString("href"));
-                
+
                 if (mode > 1) {
                     result.append("\">");
                     result.append(object.optString("title"));
                     result.append(("</a> "));
                     result.append("</h2>");
                 }
-                
+
                 if (mode > 2) {
                     if (!object.isNull("content")) {
                         JSONObject content = object.optJSONObject("content");
@@ -94,7 +101,7 @@ public class Exporter implements Runnable {
                 stash.put(result.toString());
 
                 if (progressBar != null) {
-                    progressBar.setValue(indexValue);
+                    progressBar.setValue(indexValue+1);
                 }
             }
         }
