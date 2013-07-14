@@ -9,6 +9,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.swing.JButton;
 
+/**
+ * Gives index of JSON file in order. Singleton
+ * @author ormanli
+ */
 public class Index {
 
     private int length;
@@ -16,6 +20,10 @@ public class Index {
     private JButton button;
     private static Index ourInstance = new Index();
 
+    /**
+     * 
+     * @return Instance of Index
+     */
     public static Index getInstance() {
         return ourInstance;
     }
@@ -23,6 +31,10 @@ public class Index {
     private Index() {
     }
 
+    /**
+     * 
+     * @param path Path of JSON file
+     */
     public void setTokener(String path) {
         JSONTokener tokener = null;
         try {
@@ -35,6 +47,10 @@ public class Index {
         this.length = items.length();
     }
 
+    /**
+     * Value of next index. Does not increments index.
+     * @return Value of Index
+     */
     public int nextIndex() {
         if (index < length) {
             return index;
@@ -53,6 +69,10 @@ public class Index {
         }
     }
 
+    /**
+     * Gives next index and increments index.
+     * @return Value of Index
+     */
     public synchronized int getIndex() {
         if (index < length) {
             int temp = index;
@@ -64,12 +84,21 @@ public class Index {
         }
     }
 
+    /**
+     * 
+     * @return Length of JSON
+     */
     public int getLength() {
         return length;
     }
 
-    public void setTokener(String path, JButton importButton) {
+    /**
+     * 
+     * @param path Path of JSON file
+     * @param button Button to interact with gui
+     */
+    public void setTokener(String path, JButton button) {
         setTokener(path);
-        this.button = importButton;
+        this.button = button;
     }
 }

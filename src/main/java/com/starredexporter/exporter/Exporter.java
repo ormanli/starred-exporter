@@ -8,6 +8,10 @@ import javax.swing.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+/**
+ * Exports items from JSON and puts to HTMLStash. Thread
+ * @author ormanli
+ */
 public class Exporter implements Runnable {
 
     private String name;
@@ -15,12 +19,23 @@ public class Exporter implements Runnable {
     private JProgressBar progressBar;
     private int mode;
 
+    /**
+     * 
+     * @param path
+     * @param name
+     */
     public Exporter(String path, String name) {
         this.path = path;
         this.name = name;
         this.mode = 3;
     }
 
+    /**
+     * 
+     * @param path
+     * @param name
+     * @param progressBar
+     */
     public Exporter(String path, String name, JProgressBar progressBar) {
         this.path = path;
         this.name = name;
@@ -28,6 +43,13 @@ public class Exporter implements Runnable {
         this.mode = 3;
     }
 
+    /**
+     * 
+     * @param path Path of JSON file
+     * @param name Name of thread
+     * @param progressBar Progressbar to interact with gui
+     * @param mode Mode of export
+     */
     public Exporter(String path, String name, JProgressBar progressBar, int mode) {
         this.path = path;
         this.name = name;
@@ -35,6 +57,12 @@ public class Exporter implements Runnable {
         this.mode = mode;
     }
 
+    /**
+     * 
+     * @param name Name of thread
+     * @param path Path of JSON file
+     * @param mode Mode of export
+     */
     public Exporter(String name, String path, int mode) {
         this.name = name;
         this.path = path;

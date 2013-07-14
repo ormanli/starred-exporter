@@ -4,12 +4,20 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Stores items exported from JSON and prints to a HTML file. Singleton
+ * @author ormanli
+ */
 public class HTMLStash {
 
     private static HTMLStash ourInstance = new HTMLStash();
     private StringBuffer output = new StringBuffer();
     private boolean isPrinted = false;
 
+    /**
+     * 
+     * @return Instance of HTMLStash
+     */
     public static HTMLStash getInstance() {
         return ourInstance;
     }
@@ -17,10 +25,18 @@ public class HTMLStash {
     private HTMLStash() {
     }
 
+    /**
+     * Gets string and stores in stash.
+     * @param input String to store
+     */
     public synchronized void put(String input) {
         output.append(input);
     }
 
+    /**
+     * Prints stored elements to HTML file.
+     * @throws IOException
+     */
     public void printOutput() throws IOException {
         if (!isPrinted) {
             isPrinted = false;
