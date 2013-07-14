@@ -21,8 +21,8 @@ public class Exporter implements Runnable {
 
     /**
      * 
-     * @param path
-     * @param name
+     * @param path Path of JSON file
+     * @param name Name of thread
      */
     public Exporter(String path, String name) {
         this.path = path;
@@ -32,9 +32,9 @@ public class Exporter implements Runnable {
 
     /**
      * 
-     * @param path
-     * @param name
-     * @param progressBar
+     * @param path Path of JSON file
+     * @param name Name of thread
+     * @param progressBar Progressbar to interact with gui
      */
     public Exporter(String path, String name, JProgressBar progressBar) {
         this.path = path;
